@@ -1,151 +1,158 @@
-# Data Transformer — SQL Project (PR. 2)
+# PR. Final Project — University Course Management System
 
-Interactive SQL learning project based on **Customers**, **Orders**, and **Employees** tables.  
-Covers joins, subqueries, date/string functions, window functions, and CASE expressions.
+**Project:** Final Project  
+**Database:** MySQL 8+  
+**Theme:** University Course Management System
 
 ---
 
 ## Objective
 
-Practice and demonstrate core SQL skills by writing and running **17 queries** against a realistic sales / HR schema.
+The **Final Project** aims to synthesize and apply a broad range of SQL concepts through comprehensive database design and query execution. It focuses on working with all types of SQL operations (CRUD, joins, subqueries, string and date manipulation, window functions, and CASE expressions) to create a functional database system for a **University Course Management System**.
+
+Students implement a complete database with tables related to students, courses, instructors, enrollments, and departments, and perform complex SQL queries including CRUD, aggregations, filtering, sorting, subqueries, window functions, and CASE expressions.
+
+---
+
+## Project Overview
+
+The University Course Management System has the following tables:
+
+1. **Students** — information about students  
+2. **Courses** — details of courses available at the university  
+3. **Instructors** — information about course instructors  
+4. **Enrollments** — which students are enrolled in which courses  
+5. **Departments** — academic departments within the university  
 
 ---
 
 ## Database Schema
 
-### Customers
-| Column            | Type         | Description              |
-|-------------------|--------------|--------------------------|
-| CustomerID        | INT (PK)     | Unique customer ID       |
-| FirstName         | VARCHAR(80)  | First name               |
-| LastName          | VARCHAR(80)  | Last name                |
-| Email             | VARCHAR(160) | Email (may contain spaces for TRIM demo) |
-| RegistrationDate  | DATE         | Date customer registered |
+### 1. Students
+| Field            | Type         |
+|------------------|--------------|
+| StudentID        | INT (PK)     |
+| FirstName        | VARCHAR(80)  |
+| LastName         | VARCHAR(80)  |
+| Email            | VARCHAR(160) |
+| BirthDate        | DATE         |
+| EnrollmentDate   | DATE         |
 
-### Orders
-| Column      | Type          | Description        |
-|-------------|---------------|--------------------|
-| OrderID     | INT (PK)      | Unique order ID    |
-| CustomerID  | INT           | FK → Customers     |
-| OrderDate   | DATE          | Date of order      |
-| TotalAmount | DECIMAL(12,2) | Order total        |
+### 2. Courses
+| Field         | Type          |
+|---------------|---------------|
+| CourseID      | INT (PK)      |
+| CourseName    | VARCHAR(120)  |
+| DepartmentID  | INT           |
+| Credits       | INT           |
 
-### Employees
-| Column      | Type          | Description     |
-|-------------|---------------|-----------------|
-| EmployeeID  | INT (PK)      | Unique employee |
-| FirstName   | VARCHAR(80)   | First name      |
-| LastName    | VARCHAR(80)   | Last name       |
-| Department  | VARCHAR(80)   | Department name |
-| HireDate    | DATE          | Hire date       |
-| Salary      | DECIMAL(12,2) | Annual salary   |
+### 3. Instructors
+| Field         | Type          |
+|---------------|---------------|
+| InstructorID  | INT (PK)      |
+| FirstName     | VARCHAR(80)   |
+| LastName      | VARCHAR(80)   |
+| Email         | VARCHAR(160)  |
+| DepartmentID  | INT           |
+| Salary        | DECIMAL(12,2) |
 
----
+### 4. Enrollments
+| Field          | Type |
+|----------------|------|
+| EnrollmentID   | INT (PK) |
+| StudentID      | INT  |
+| CourseID       | INT  |
+| EnrollmentDate | DATE |
 
-## Sample Data — Tables
-
-### 1. Customers
-
-![Customers table](screenshots/screenshot_1_Customers.png)
-
-### 2. Orders
-
-![Orders table](screenshots/screenshot_2_Orders.png)
-
-### 3. Employees
-
-![Employees table](screenshots/screenshot_3_Employees.png)
-
----
-
-## Queries (1–17)
-
-| #  | Topic              | Description                                      |
-|----|--------------------|--------------------------------------------------|
-| 1  | INNER JOIN         | Orders with matching customer details            |
-| 2  | LEFT JOIN          | All customers; orders if any (Elena → NULL)      |
-| 3  | RIGHT JOIN         | All orders; customer if any                      |
-| 4  | FULL OUTER JOIN    | All customers + all orders (MySQL: LEFT ∪ RIGHT) |
-| 5  | Subquery           | Orders above average `TotalAmount`               |
-| 6  | Subquery           | Employees above average `Salary`                 |
-| 7  | Date               | Year / month / month name from `OrderDate`       |
-| 8  | Date               | Days between order date and current date         |
-| 9  | Date format        | Format `OrderDate` as `DD-Mon-YYYY`              |
-| 10 | String             | Concatenate `FirstName` + `LastName`             |
-| 11 | String             | Replace `John` → `Jonathan`                      |
-| 12 | String             | `UPPER(FirstName)`, `LOWER(LastName)`            |
-| 13 | String             | `TRIM(Email)` and length comparison              |
-| 14 | Window             | Running total of `TotalAmount`                   |
-| 15 | Window             | `RANK()` by `TotalAmount` DESC                   |
-| 16 | CASE               | Discount: >1000 → 10%, >500 → 5%, else none      |
-| 17 | CASE               | Salary band: High ≥75k, Medium ≥50k, else Low    |
+### 5. Departments
+| Field           | Type         |
+|-----------------|--------------|
+| DepartmentID    | INT (PK)     |
+| DepartmentName  | VARCHAR(100) |
 
 ---
 
-## Important Query Results (Screenshots)
+## Sample Data (summary)
 
-### Q1 — INNER JOIN
+- **12 students** (enrollment years from 2019–2024 for Senior/Junior labels)  
+- **12 courses** across Computer Science, Mathematics, Physics, Business  
+- **7 instructors** with salaries (for max-salary query)  
+- **43 enrollments** so some courses have >5 and >10 students  
+- **4 departments**: Computer Science, Mathematics, Physics, Business  
 
-![INNER JOIN result](screenshots/screenshot_4_INNER_JOIN.png)
-
-### Q2 — LEFT JOIN (Elena has no orders)
-
-![LEFT JOIN result](screenshots/screenshot_5_LEFT_JOIN.png)
-
-### Q16 — CASE discounts
-
-![Discount CASE result](screenshots/screenshot_6_Discount_CASE.png)
-
-### Q17 — CASE salary bands
-
-![Salary bands result](screenshots/screenshot_7_Salary_Bands.png)
-
-### Q15 — RANK() by TotalAmount
-
-![RANK result](screenshots/screenshot_8_RANK.png)
+Full inserts are in `final_project_mysql.sql`.
 
 ---
 
-## How to run (MySQL Workbench)
+## Queries to Perform
 
-1. Open **MySQL Workbench** (MySQL **8.0+** required for window functions).
-2. Create a connection and open a new SQL tab.
-3. Copy the full script from `data_transformer_mysql.sql`.
-4. Run the whole script once:
-   - Creates tables
-   - Loads sample data
-   - Executes all 17 queries
-5. To re-run only queries, select a single query block and execute.
-
-### MySQL notes
-- **FULL OUTER JOIN** is implemented as `LEFT JOIN … UNION … RIGHT JOIN` (MySQL has no native FULL OUTER JOIN).
-- Date formatting uses `DATE_FORMAT(..., '%d-%b-%Y')`.
-- Day difference uses `DATEDIFF(CURRENT_DATE, OrderDate)`.
-- Name concatenation uses `CONCAT(...)`.
+| #  | Description |
+|----|-------------|
+| 1  | Perform **CRUD** operations on all tables |
+| 2  | Retrieve students who enrolled **after 2022** |
+| 3  | Retrieve courses offered by the **Mathematics** department (limit 5) |
+| 4  | Number of students enrolled in each course, only courses with **more than 5** students |
+| 5  | Students enrolled in **both** Introduction to SQL **and** Data Structures |
+| 6  | Students enrolled in **either** Introduction to SQL **or** Data Structures |
+| 7  | Average number of credits for all courses |
+| 8  | Maximum salary of instructors in the **Computer Science** department |
+| 9  | Count the number of students enrolled in each department |
+| 10 | **INNER JOIN:** Students and their corresponding courses |
+| 11 | **LEFT JOIN:** All students and their corresponding courses, if any |
+| 12 | **Subquery:** Students enrolled in courses that have more than 10 students |
+| 13 | Extract the **year** from the EnrollmentDate of students |
+| 14 | Concatenate the instructor’s first and last name |
+| 15 | Running total of students enrolled in courses |
+| 16 | Label students as **'Senior'** or **'Junior'** (Senior if enrollment date is more than 4 years before current date) |
 
 ---
 
-## Project structure (for GitHub)---
+## How to Run (MySQL Workbench)
+
+1. Open **MySQL Workbench** (MySQL **8.0+**).  
+2. Open `final_project_mysql.sql`.  
+3. Run the full script once (creates tables, loads data, runs all queries).  
+4. To run a single query, select that block and execute it.
+
+---
 
 ## Assumptions
 
-1. Sample data is extended beyond the minimal assignment rows so queries 5, 6, 14–17 produce meaningful multi-row results.
-2. Customer **Elena Vargas** has no orders (demonstrates LEFT JOIN NULLs).
-3. Customer **Michael Torres** has leading/trailing spaces in email (demonstrates TRIM).
-4. Two customers named **John** (Doe, Park) so REPLACE affects more than one row.
-5. MySQL 8.0+ is assumed for `RANK()` and `SUM() OVER (...)`.
-6. No foreign-key constraints are enforced in the script so RIGHT JOIN / orphan scenarios remain flexible for demos.
+1. **Salary** column was added to `Instructors` because Query 8 requires maximum instructor salary (not shown in the partial sample tables in the brief).  
+2. Sample data was expanded beyond the 2-row examples so that:
+   - Query 4 (courses with >5 students) and Query 12 (courses with >10 students) return rows  
+   - Query 5 (students in **both** courses) returns multiple students  
+   - Query 16 (Senior / Junior) has both labels  
+3. **Senior** = `EnrollmentDate < CURRENT_DATE - 4 years`; otherwise **Junior**.  
+4. Department names used exactly as in the brief: `Computer Science`, `Mathematics`.  
+5. Course names used exactly: `Introduction to SQL`, `Data Structures`.  
+6. MySQL 8.0+ is required for window functions (`SUM() OVER`).  
 
 ---
 
-## Author / submission
+## Project Structure (GitHub)
 
-- **Project:** Data Transformer (PR. 2)
-- **Focus:** SQL joins, subqueries, functions, window functions, CASE
-- **Engine used for practice:** MySQL 8+ (Workbench)
+```
+final-project/
+├── FINAL_PROJECT_README.md      (this file)
+├── final_project_mysql.sql      (schema + seed + all queries)
+└── screenshots/                 (optional result screenshots)
+```
 
 ---
 
-## License
+## Instructions Followed
 
-Educational use only — free to copy and adapt for coursework.
+- **Task Completion:** All 16 assigned tasks are implemented.  
+- **Assumptions:** Documented in this README.  
+- **GitHub:** Upload SQL file + README (and screenshots if any) and submit the repository link as instructed.  
+- **Original work:** All SQL and documentation prepared for this assignment.
+
+---
+
+## Author
+
+- **Project:** PR. Final Project — University Course Management System  
+- **Focus:** CRUD, Joins, Subqueries, Aggregations, Date/String functions, Window functions, CASE  
+- **Engine:** MySQL 8+
+- 
